@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict oSODl0OuUMDOEeWwy0XdTROCZZQhHQJt5B8tHaKaZ9feR5iv5kd3dqF6k1mTVWG
+\restrict KULUjep5pZfwRj974VgcFC0I7nYREWIJc1fqV8YmLiop8VSXhVqPqmjODrazD0W
 
 -- Dumped from database version 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
 -- Dumped by pg_dump version 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
@@ -213,6 +213,8 @@ COPY public.admin (id, nombre, email, password) FROM stdin;
 --
 
 COPY public.consultas (id, horario, id_doctor, id_mascota) FROM stdin;
+2	Vespertino	3	2
+1	Vespertino	2	1
 \.
 
 
@@ -222,6 +224,7 @@ COPY public.consultas (id, horario, id_doctor, id_mascota) FROM stdin;
 
 COPY public.doctores (id, nombre, especialidad, horario, contacto) FROM stdin;
 2	Ricardo	Veterinaria	Matutino	5546876428
+3	Dafne	Cirugía	Matutino	5576856978
 \.
 
 
@@ -231,6 +234,7 @@ COPY public.doctores (id, nombre, especialidad, horario, contacto) FROM stdin;
 
 COPY public.mascotas (id, nombre, edad, raza, peso, sexo, h_medico) FROM stdin;
 1	Wally	9	Labrador	20.2	M	Perro
+2	Logan	15	French Poodle	5.5	M	Perro Sano
 \.
 
 
@@ -245,21 +249,21 @@ SELECT pg_catalog.setval('public.admin_id_seq', 4, true);
 -- Name: consultas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vet_admin
 --
 
-SELECT pg_catalog.setval('public.consultas_id_seq', 1, false);
+SELECT pg_catalog.setval('public.consultas_id_seq', 2, true);
 
 
 --
 -- Name: doctores_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vet_admin
 --
 
-SELECT pg_catalog.setval('public.doctores_id_seq', 2, true);
+SELECT pg_catalog.setval('public.doctores_id_seq', 3, true);
 
 
 --
 -- Name: mascotas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vet_admin
 --
 
-SELECT pg_catalog.setval('public.mascotas_id_seq', 1, true);
+SELECT pg_catalog.setval('public.mascotas_id_seq', 2, true);
 
 
 --
@@ -314,5 +318,5 @@ ALTER TABLE ONLY public.consultas
 -- PostgreSQL database dump complete
 --
 
-\unrestrict oSODl0OuUMDOEeWwy0XdTROCZZQhHQJt5B8tHaKaZ9feR5iv5kd3dqF6k1mTVWG
+\unrestrict KULUjep5pZfwRj974VgcFC0I7nYREWIJc1fqV8YmLiop8VSXhVqPqmjODrazD0W
 
