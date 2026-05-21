@@ -110,7 +110,7 @@ def doc_del():
 
 @app.route('/consultas')
 def app_con():
-	cursor.execute('select * from consultas order by id asc')
+	cursor.execute('select consultas.id, consultas.horario, mascotas.nombre, doctores.nombre from consultas inner join doctores on consultas.id_doctor = doctores.id inner join mascotas on consultas.id_mascota = mascotas.id order by id asc')
 	reg = cursor.fetchall()
 	for i in reg:
        	        print("/".join(map(str,i)))
@@ -130,8 +130,7 @@ def app_up():
 	pid = request.form['id']
 	hor = request.form['horario']
 	doc = request.form['doc']
-	pet = request.form['pet']
-	cursor.execute('update consultas set horario=%s, id_doctor=%s, id_mascota=%s where id=%s',(hor,doc,pet,pid,))
+	cursor.execute('update consultas set horario=%s, id_doctor=%s where id=%s',(hor,doc,pid,))
 	connect.commit()
 	return redirect('/consultas')
 
@@ -153,3 +152,9 @@ def reg_admin():
 		cursor.execute('insert into admin (nombre,email,password) values (%s,%s,%s)',(nom,eml,password_hash))
 		connect.commit()
 	return render_template('register.html')
+
+#PRUEBAS(borrar al terminar)-----------------------------------------------------------------------------
+
+@app.route('/testing', methods=['GET','POST'])
+def pruebas():
+	return render_template('test.html')

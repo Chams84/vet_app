@@ -1,5 +1,7 @@
-{% import 'base_template.html' as all_body%}
+{% extends 'base_template.html'%}
 
+{% block title %} Doctores {% endblock %}
+{% block main %}
 <h2>Doctores</h2>
 <table>
         <tr>
@@ -38,6 +40,7 @@
         <button type="submit">Eliminar</button>
 </form>
 <br>
-<a href="{{url_for('index')}}"><button type="button"> Volver al Índice</button></a> <!-- Regresa a / -->
+<a href="{{url_for('dash')}}"><button type="button"> Volver al Inicio</button></a> <!-- Regresa a / -->
 </body>
+{% endblock %}
 </html>
