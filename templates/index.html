@@ -1,10 +1,12 @@
-{% extends 'base_template.html' %}
-
-
-{% block title%} Inicio {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static',filename='login.css')}}">
+    <title>Vet App</title>
+</head>
 <header>
 	<a href="{{url_for('login_admin')}}"><button type="button">Inicia Sesión</button></a>
 </header>
-{% block main %}
-	<h3>Poner imágenes de animales y así xd</h3>
-{% endblock %}
+<body>
+	<div class="image"></div>
+</body>

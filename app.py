@@ -1,11 +1,25 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
+from functools import wraps
 from database import con
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 
 app = Flask(__name__)
+app.secret_key = 'secret_key'
 connect = con()
 cursor = connect.cursor()
+
+#Función para comprobar sesión inciada--------------------------------------------------------------------
+
+def log_chk(f):
+	@wraps(f)
+	def decorated_function(*args, **kwargs):
+		if 'user' not in session:
+			return redirect(url_for('index'))
+		return f(*args, **kwargs)
+	return decorated_function
+
+#Inicio------------------------------------------------------------------------------------------------
 
 @app.route('/')
 def index():
@@ -16,25 +30,35 @@ def index():
 @app.route('/login', methods=['GET','POST'])
 def login_admin():
 	if request.method == 'POST':
-		eml = request.form['email']
+		user = request.form['email']
 		password = request.form['password']
-		cursor.execute('select password from admin where email=%s',(eml,))
+		cursor.execute('select password from admin where email=%s',(user,))
 		log = cursor.fetchone()
 		if log and check_password_hash(log[0],password):
+			session ['user'] = user
 			return redirect('/dashboard')
 		else:
 			return render_template('login.html', msg="Usuario o Contraseña incorrectos")
 	return render_template('login.html')
 
-#Dashboard-------------------------------------------------------------------------------------------------
+#Logout-----------------------------------------------------------------------------------------------
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('index'))
+
+#Dashboard---------------------------------------------------------------------------------------------
 
 @app.route('/dashboard')
+@log_chk
 def dash():
 	return render_template('dashboard.html')
 
 #Mascotas-------------------------------------------------------------------------------------------------
 
 @app.route('/mascotas')
+@log_chk
 def pet_con():
 	cursor.execute('select * from mascotas order by id asc')
 	reg = cursor.fetchall()
@@ -43,6 +67,7 @@ def pet_con():
 	return render_template('mascotas.html',data=reg)
 
 @app.route('/reg_pet', methods=['POST'])
+@log_chk
 def pet_reg():
 	nom = request.form['nombre']
 	edad = request.form['edad']
@@ -50,12 +75,12 @@ def pet_reg():
 	peso = request.form['peso']
 	sexo = request.form['sexo']
 	hmed = request.form['historial']
-
 	cursor.execute('insert into mascotas (nombre,edad,raza,peso,sexo,h_medico) values (%s,%s,%s,%s,%s,%s)',(nom,edad,raza,peso,sexo,hmed,))
 	connect.commit()
 	return redirect('/mascotas')
 
 @app.route('/up_pet',methods=['POST'])
+@log_chk
 def pet_up():
 	pid = request.form['id']
 	edad = request.form['edad']
@@ -66,6 +91,7 @@ def pet_up():
 	return redirect('/mascotas')
 
 @app.route('/del_pet',methods=['POST'])
+@log_chk
 def pet_del():
 	pid = request.form['id']
 	cursor.execute('delete from mascotas where id=%s',(pid))
@@ -74,6 +100,7 @@ def pet_del():
 #Doctores-------------------------------------------------------------------------------------------------
 
 @app.route('/doctores')
+@log_chk
 def doc_con():
 	cursor.execute('select * from doctores order by id asc')
 	reg = cursor.fetchall()
@@ -82,6 +109,7 @@ def doc_con():
 	return render_template('doctores.html',data=reg)
 
 @app.route('/reg_doc', methods=['POST'])
+@log_chk
 def doc_reg():
 	nom = request.form['nombre']
 	esp = request.form['especialidad']
@@ -92,6 +120,7 @@ def doc_reg():
 	return redirect('/doctores')
 
 @app.route('/up_doc',methods=['POST'])
+@log_chk
 def doc_up():
 	pid = request.form['id']
 	hor = request.form['horario']
@@ -101,6 +130,7 @@ def doc_up():
 	return redirect('/doctores')
 
 @app.route('/del_doc',methods=['POST'])
+@log_chk
 def doc_del():
 	pid = request.form['id']
 	cursor.execute('delete from doctores where id=%s',(pid))
@@ -109,6 +139,7 @@ def doc_del():
 #Consultas-------------------------------------------------------------------------------------------------
 
 @app.route('/consultas')
+@log_chk
 def app_con():
 	cursor.execute('select consultas.id, consultas.horario, mascotas.nombre, doctores.nombre from consultas inner join doctores on consultas.id_doctor = doctores.id inner join mascotas on consultas.id_mascota = mascotas.id order by id asc')
 	reg = cursor.fetchall()
@@ -117,6 +148,7 @@ def app_con():
 	return render_template('consultas.html',data=reg)
 
 @app.route('/reg_app', methods=['POST'])
+@log_chk
 def app_reg():
 	hor = request.form['horario']
 	doc = request.form['doc']
@@ -126,6 +158,7 @@ def app_reg():
 	return redirect('/consultas')
 
 @app.route('/up_app',methods=['POST'])
+@log_chk
 def app_up():
 	pid = request.form['id']
 	hor = request.form['horario']
@@ -135,6 +168,7 @@ def app_up():
 	return redirect('/consultas')
 
 @app.route('/del_app',methods=['POST'])
+@log_chk
 def app_del():
 	pid = request.form['id']
 	cursor.execute('delete from consultas where id=%s',(pid))
@@ -143,6 +177,7 @@ def app_del():
 #Registro(oculto)-----------------------------------------------------------------------------------------
 
 @app.route('/registro', methods=['GET','POST'])
+@log_chk
 def reg_admin():
 	if request.method == "POST":
 		nom = request.form['nombre']
@@ -153,7 +188,7 @@ def reg_admin():
 		connect.commit()
 	return render_template('register.html')
 
-#PRUEBAS(borrar al terminar)-----------------------------------------------------------------------------
+#PRUEBAS(borrar al terminar)------------------------------------------------------------------------------
 
 @app.route('/testing', methods=['GET','POST'])
 def pruebas():

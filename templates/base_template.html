@@ -5,15 +5,12 @@
 	<title> {% block title %}{% endblock %} </title>
         <link rel="stylesheet" href="{{url_for('static',filename='styles.css')}}">
 </head>
+
+<header>
+	<a href="{{url_for('dash')}}"><button type="button"> Volver al Inicio</button></a> <!-- Regresa a / -->
+</header>
+
 <body>
-{% block header %}
-	<header>
-		<a href="/dashboard">
-		<img src="/static/img/paw.svg" alt="" style="width: 20px; height: 20px; padding: 0%;">
-		<span style="font-size: 20px; font-weight: bold; color: #333;">VetClinic</span>
-		</a>
-	</header>
-{% endblock %}
 	<main>
 		{% block main %}
 		{% endblock %}
@@ -23,7 +20,6 @@
 		{% block footer %}
 		{% endblock %}
 	</footer>
-	
-	
+		
 </body>
 </html>
