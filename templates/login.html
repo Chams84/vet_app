@@ -1,12 +1,27 @@
-{% extends 'base_template.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block main %}
-<form action="/login" method="POST">
-    <input type="email" name="email" id="email" placeholder="Correo">
-    <input type="password" name="password" id="password" placeholder="Contraseña">
-    <button type="submit">Ingresar</button>
-</form>
-{% endblock %}
-{% if msg %}
-<script>alert("{{msg}}")</script>
-{% endif %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static',filename='login.css')}}">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="image">
+        image
+    </div>
+    <div class="main">
+        <form action="/login" method="POST">
+            <input type="email" name="email" id="email" placeholder="Correo">
+            <input type="password" name="password" id="password" placeholder="Contraseña">
+            <button type="submit">Ingresar</button>
+        </form>
+    </div>
+    {% if msg %}
+    <script>alert("{{msg}}")</script>
+    {% endif %}
+</body>
+
+</html>
