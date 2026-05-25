@@ -1,12 +1,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static',filename='login.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='index.css')}}">
     <title>Vet App</title>
 </head>
-<header>
-	<a href="{{url_for('login_admin')}}"><button type="button">Inicia Sesión</button></a>
-</header>
+
 <body>
-	<div class="image"></div>
+    <div class="login-container">
+
+        <div class="login-card">
+            <h1>Iniciar Sesión</h1>
+            <form action="/login" method="POST">
+                <label for="">Correo:</label>
+                <input type="email" name="email" id="email" placeholder="Correo">
+                <label >Contraseña:</label>
+                <input type="password" name="password" id="password" placeholder="Contraseña">
+                <button type="submit">Ingresar</button>
+            </form>
+            {% if msg %}
+            <script>alert("{{msg}}")</script>
+            {% endif %}
+        </div>
+    </div>
 </body>

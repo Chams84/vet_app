@@ -27,9 +27,8 @@ def index():
 
 #Login-------------------------------------------------------------------------------------------------
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['POST'])
 def login_admin():
-	if request.method == 'POST':
 		user = request.form['email']
 		password = request.form['password']
 		cursor.execute('select password from admin where email=%s',(user,))
@@ -37,9 +36,8 @@ def login_admin():
 		if log and check_password_hash(log[0],password):
 			session ['user'] = user
 			return redirect('/dashboard')
-		else:
-			return render_template('login.html', msg="Usuario o Contraseña incorrectos")
-	return render_template('login.html')
+		return render_template('index.html', msg="Usuario o Contraseña incorrectos")
+
 
 #Logout-----------------------------------------------------------------------------------------------
 
@@ -63,7 +61,7 @@ def pet_con():
 	cursor.execute('select * from mascotas order by id asc')
 	reg = cursor.fetchall()
 	for i in reg:
-       	        print("/".join(map(str,i)))
+		print("/".join(map(str,i)))
 	return render_template('mascotas.html',data=reg)
 
 @app.route('/reg_pet', methods=['POST'])
@@ -105,7 +103,7 @@ def doc_con():
 	cursor.execute('select * from doctores order by id asc')
 	reg = cursor.fetchall()
 	for i in reg:
-       	        print("/".join(map(str,i)))
+		print("/".join(map(str,i)))
 	return render_template('doctores.html',data=reg)
 
 @app.route('/reg_doc', methods=['POST'])
@@ -144,7 +142,7 @@ def app_con():
 	cursor.execute('select consultas.id, consultas.horario, mascotas.nombre, doctores.nombre from consultas inner join doctores on consultas.id_doctor = doctores.id inner join mascotas on consultas.id_mascota = mascotas.id order by id asc')
 	reg = cursor.fetchall()
 	for i in reg:
-       	        print("/".join(map(str,i)))
+		print("/".join(map(str,i)))
 	return render_template('consultas.html',data=reg)
 
 @app.route('/reg_app', methods=['POST'])
