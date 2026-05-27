@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+        <link rel="shortcut icon" href="/static/img/paw_white.svg" type="image/x-icon">
         <title>Menú principal</title>
         <link rel="stylesheet" href="{{url_for('static',filename='styles.css')}}">
 </head>
-<header>
-	<a href="{{url_for('logout')}}"><button type="button">Cerrar sesión</button></a>
-</header>
+
 <body>
+        <header>
+                <img src="/static/img/paw_white.svg" alt="Inicio" class="paw-logo">
+                <a href="{{url_for('logout')}}" class="a-log-out"><button type="button"><img src="/static/img/log-out-white.png" alt="Cerrar Sesión" style="width:35px;height:35px;"></button></a>
+                
+        </header>
         <main>
-        <h2>Tablas:</h2>
-        <div>
-                <a href="{{url_for('doc_con')}}"><button type="button">Doctores</button></a>
-                <a href="{{url_for('pet_con')}}"><button type="button">Mascotas</button></a>
-                <a href="{{url_for('app_con')}}"><button type="button">Consultas</button></a>
-        </div>
+                <h2>Tablas:</h2>
+                <div>
+                        <a href="{{url_for('doc_con')}}"><button type="button">Doctores</button></a>
+                        <a href="{{url_for('pet_con')}}"><button type="button">Mascotas</button></a>
+                        <a href="{{url_for('app_con')}}"><button type="button">Consultas</button></a>
+                </div>
         </main>
 </body>
+
 </html>

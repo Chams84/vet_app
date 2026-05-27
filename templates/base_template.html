@@ -2,11 +2,13 @@
 <html lang="es">
 <head>
 	<meta charset="utf-8">
+	<link rel="shortcut icon" href="/static/img/paw_white.svg" type="image/x-icon">
 	<title> {% block title %}{% endblock %} </title>
         <link rel="stylesheet" href="{{url_for('static',filename='styles.css')}}">
 </head>
 
 <header>
+	<img src="/static/img/paw_white.svg" alt="Inicio" class="paw-logo">
 	<a href="{{url_for('dash')}}"><button type="button"> Volver al Inicio</button></a> <!-- Regresa a / -->
 </header>
 
